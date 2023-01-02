@@ -1,7 +1,7 @@
-import React, { useState, useEffect} from 'react'
+import React from 'react'
 import './Text.css'
 
-export default function Text({ selectedWords, handleInput, inputText, correctLetters, remainingLetters}) {
+export default function Text({ handleInput, inputText, correctLetters, remainingLetters, inputRef}) {
 
         return (
             <div className='selected-words__container'>
@@ -9,7 +9,7 @@ export default function Text({ selectedWords, handleInput, inputText, correctLet
                 <span className='correct-letters'>{correctLetters}</span><span className='remaining-letters'>{remainingLetters}</span>
             </div>
             <div className='input__container'>
-                <input spellCheck='false' value={inputText} onChange={handleInput} className='input' />
+                <input ref={inputRef} autoFocus spellCheck='false' value={inputText} onChange={handleInput} className='input' />
             </div>
         </div>
     )

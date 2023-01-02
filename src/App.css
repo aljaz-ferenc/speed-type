@@ -2,4 +2,12 @@
     padding: 5rem;
 }
 
+.word-count-btn{
+    display: block;
+    margin-top: 1rem;
+}
 
+.App{
+    background-color: rgb(243, 248, 251);
+    min-height: 100vh;
+}

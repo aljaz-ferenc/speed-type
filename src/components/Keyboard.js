@@ -11,6 +11,7 @@ export default function Keyboard({selectedWords, inputText}) {
 
     function handleKeyPress() {
         window.addEventListener('keydown', (e) => {
+            console.log(e.key)
             setPressedKey(e.key)
         })
         window.addEventListener('keyup', () => {            

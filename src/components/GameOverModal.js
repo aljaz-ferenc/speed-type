@@ -1,12 +1,14 @@
 import React from 'react'
 import './GameOverModal.css'
 
-export default function GameOverModal({onPlayAgain}) {
+export default function GameOverModal({ onPlayAgain }) {
   return (
     <div className='game-over-modal'>
-        <h1>GAME OVER</h1>
+      <div className='game-over-modal__container'>
+        <h1 className='game-over-modal__heading'>GAME OVER</h1>
         <p>You missed a letter 😥</p>
-        <button onClick={onPlayAgain}>Play Again!</button>
+        <button autoFocus onClick={onPlayAgain}>Try Again!</button>
+      </div>
     </div>
   )
 }

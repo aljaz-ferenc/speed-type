@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import Keyboard from './components/Keyboard';
 import Text from './components/Text';
 import { useState, useEffect } from 'react';
@@ -6,21 +7,43 @@ import GameOverModal from './components/GameOverModal';
 import GameWinModal from './components/GameWinModal';
 
 function App() {
-  const [selectedWords, setSelectedWords] = useState()
+  const [selectedWords, setSelectedWords] = useState(0)
   const [inputText, setInputText] = useState('')
   const [gameStatus, setGameStatus] = useState('play')
-  const [wordCount, setWordCount] = useState(10)
+  const [wordCount, setWordCount] = useState(3)
   const [characterCount, setCharacterCount] = useState(0)
   const [correctLetters, setCorrectLetters] = useState('')
   const [remainingLetters, setRemainingLetters] = useState('')
-  // const [time, setTime] = useState({start: 0, end: 0})
+  const [start, setStart] = useState(0)
+  const [end, setEnd] = useState(0)
+  const [sum, setSum] = useState(0)
+  const [average, setAverage] = useState(0)
+
+  const inputRef = React.createRef()
 
   useEffect(() => {
+    setSum(((end - start) / 1000).toFixed(2))
+    setAverage((selectedWords.length / sum).toFixed(2))
+  }, [end, sum, selectedWords, start])
+
+
+  useEffect(() => {
+    if (characterCount === 1) {
+      setStart(new Date().getTime())
+    }
+    if (selectedWords.length === characterCount) {
+      setEnd(new Date().getTime())
+    }
+  }, [characterCount, selectedWords])
+
+  
+  useEffect(() => {
     getWords()
+    inputRef.current.focus()
   }, [])
 
-  function getWords() {
 
+  function getWords() {
     fetch('https://random-word-api.herokuapp.com/all')
       .then(response => response.json())
       .then(data => {
@@ -51,7 +74,7 @@ function App() {
       setInputText(e.target.value)
       setGameStatus('win')
     }
-    
+
     setCharacterCount(prevCount => prevCount + 1)
     setCorrectLetters(selectedWords.slice(0, characterCount + 1))
     setRemainingLetters(selectedWords.slice(characterCount + 1))
@@ -64,22 +87,34 @@ function App() {
     setCharacterCount(0)
     setCorrectLetters('')
     setRemainingLetters('')
+    setSum(0)
+    setEnd(0)
+    setStart(0)
+    setAverage(0)
+    inputRef.current.focus()
   }
 
   function handleWordCountChange(e) {
     setWordCount(e.target.value)
   }
 
+
   return (
     <div className="App">
       {gameStatus === 'over' && <GameOverModal onPlayAgain={handlePlayAgain} />}
-      {gameStatus === 'win' && <GameWinModal onPlayAgain={handlePlayAgain} />}
+      {gameStatus === 'win' && <GameWinModal average={average} sum={sum} onPlayAgain={handlePlayAgain} />}
       <div className='padding'>
-        <Text characterCount={characterCount} inputText={inputText} handleInput={handleInput} correctLetters={correctLetters} remainingLetters={remainingLetters} selectedWords={selectedWords} />
+        <Text characterCount={characterCount}
+          inputText={inputText}
+          handleInput={handleInput}
+          correctLetters={correctLetters}
+          remainingLetters={remainingLetters}
+          selectedWords={selectedWords}
+          inputRef={inputRef} />
         <Keyboard selectedWords={selectedWords} />
-        <input value={wordCount} onChange={handleWordCountChange} type='range' min='5' max='50' />
-        <p>{wordCount}</p>
-        <button onClick={getWords}>Submit!</button>
+        <p>Number of words: {wordCount}</p>
+        <input value={wordCount} onChange={handleWordCountChange} type='range' min='3' max='50' />
+        <button className='word-count-btn' onClick={handlePlayAgain}>GO!</button>
       </div>
     </div>
   );

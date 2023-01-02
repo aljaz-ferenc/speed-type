@@ -1,12 +1,16 @@
 import React from 'react'
 import './GameWinModal.css'
 
-export default function GameOverModal({onPlayAgain}) {
+export default function GameOverModal({ onPlayAgain, sum, average }) {
   return (
     <div className='game-win-modal'>
-        <h1>YOU WIN!!!</h1>
+      <div className='game-win-modal__container'>
+        <h1 className='game-win-modal__heading'>YOU WIN!!!</h1>
         <p>Great job! 😀</p>
-        <button onClick={onPlayAgain}>Play Again!</button>
+        <p>Your time: {sum} seconds</p>
+        <p>Average: {average} characters per second</p>
+        <button autoFocus onClick={onPlayAgain}>Play Again!</button>
+      </div>
     </div>
   )
 }
