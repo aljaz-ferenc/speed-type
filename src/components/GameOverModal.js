@@ -1,14 +1,18 @@
 import React from 'react'
 import './GameOverModal.css'
+import ReactDOM from 'react-dom'
 
-export default function GameOverModal({ onPlayAgain }) {
-  return (
+export default function GameOverModal({ onPlayAgain, gameStatus }) {
+  if(gameStatus !== 'over') return
+
+  return ReactDOM.createPortal(
     <div className='game-over-modal'>
       <div className='game-over-modal__container'>
         <h1 className='game-over-modal__heading'>GAME OVER</h1>
         <p>You missed a letter 😥</p>
-        <button autoFocus onClick={onPlayAgain}>Try Again!</button>
+        <button className='game-over-modal__button' autoFocus onClick={onPlayAgain}>Try Again!</button>
       </div>
-    </div>
+    </div>,
+    document.getElementById('portal')
   )
 }

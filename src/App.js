@@ -18,6 +18,7 @@ function App() {
   const [end, setEnd] = useState(0)
   const [sum, setSum] = useState(0)
   const [average, setAverage] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
   const inputRef = React.createRef()
 
@@ -36,14 +37,14 @@ function App() {
     }
   }, [characterCount, selectedWords])
 
-  
+
   useEffect(() => {
     getWords()
-    inputRef.current.focus()
   }, [])
 
 
   function getWords() {
+    setIsLoading(true)
     fetch('https://random-word-api.herokuapp.com/all')
       .then(response => response.json())
       .then(data => {
@@ -60,18 +61,20 @@ function App() {
         })
         setSelectedWords(randomWords.join(' '))
         setRemainingLetters(randomWords.join(' '))
+        setIsLoading(false)
       })
+    inputRef.current.focus()
   }
 
   function handleInput(e) {
 
-    if (selectedWords.startsWith(e.target.value)) {
-      setInputText(e.target.value)
+    if (selectedWords.startsWith(e.target.value.toLowerCase())) {
+      setInputText(e.target.value.toLowerCase())
     } else {
       setGameStatus('over')
     }
-    if (selectedWords === e.target.value) {
-      setInputText(e.target.value)
+    if (selectedWords === e.target.value.toLowerCase()) {
+      setInputText(e.target.value.toLowerCase())
       setGameStatus('win')
     }
 
@@ -98,13 +101,18 @@ function App() {
     setWordCount(e.target.value)
   }
 
+  function handleMouseUp() {
+    handlePlayAgain()
+  }
+
 
   return (
     <div className="App">
-      {gameStatus === 'over' && <GameOverModal onPlayAgain={handlePlayAgain} />}
-      {gameStatus === 'win' && <GameWinModal average={average} sum={sum} onPlayAgain={handlePlayAgain} />}
+      <GameOverModal gameStatus={gameStatus} onPlayAgain={handlePlayAgain} />
+      <GameWinModal gameStatus={gameStatus} average={average} sum={sum} onPlayAgain={handlePlayAgain} />
       <div className='padding'>
         <Text characterCount={characterCount}
+          isLoading={isLoading}
           inputText={inputText}
           handleInput={handleInput}
           correctLetters={correctLetters}
@@ -112,9 +120,10 @@ function App() {
           selectedWords={selectedWords}
           inputRef={inputRef} />
         <Keyboard selectedWords={selectedWords} />
-        <p>Number of words: {wordCount}</p>
-        <input value={wordCount} onChange={handleWordCountChange} type='range' min='3' max='50' />
-        <button className='word-count-btn' onClick={handlePlayAgain}>GO!</button>
+        <div className='word-count-input'>
+          <p>Select number of words: {wordCount}</p>
+          <input value={wordCount} onMouseUp={handleMouseUp} onChange={handleWordCountChange} type='range' min='3' max='50' />
+        </div>
       </div>
     </div>
   );

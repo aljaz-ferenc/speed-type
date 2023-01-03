@@ -8,15 +8,27 @@
     justify-content: center;
     align-items: center;
     z-index: 1;
-    background-color: rgba(0, 128, 0, 0.468);
 }
 
 .game-win-modal__container{
     background-color: #fff;
     padding: 3rem;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }
 
 .game-win-modal__heading{
     margin-top: 0;
+}
+
+.game-win-modal__button{
+    background-color: rgba(0, 68, 128, 0.79);
+    border: none;
+    padding: .5rem 2rem;
+    color: #fff;
+    font-family: inherit;
+    border-radius: 3px;
 }
