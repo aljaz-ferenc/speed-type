@@ -9,11 +9,14 @@ const thirdRow = ['y', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.']
 export default function Keyboard({selectedWords, inputText}) {
     const [pressedKey, setPressedKey] = useState('')
 
-    // function handleKeyPress(e) {
-    //         console.log(e.key)
-    //         console.log('lol')
-    //         setPressedKey(e.key)
-    // }
+    useEffect(() => {
+        document.addEventListener('keydown', (e) => {
+            setPressedKey(e.key)
+        })
+        document.addEventListener('keyup', (e) => {
+            setPressedKey('')
+        })
+    }, [])
 
     return (
         <div className='keyboard'>
