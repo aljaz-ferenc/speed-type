@@ -10,7 +10,7 @@ function App() {
   const [selectedWords, setSelectedWords] = useState(0)
   const [inputText, setInputText] = useState('')
   const [gameStatus, setGameStatus] = useState('play')
-  const [wordCount, setWordCount] = useState(3)
+  const [wordCount, setWordCount] = useState(10)
   const [characterCount, setCharacterCount] = useState(0)
   const [correctLetters, setCorrectLetters] = useState('')
   const [remainingLetters, setRemainingLetters] = useState('')
