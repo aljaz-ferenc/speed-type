@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Speed Typing App
 
 Speed Typing App is written in React and it allows users to test their blind typing skills.
 
